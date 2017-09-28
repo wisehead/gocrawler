@@ -1,0 +1,21 @@
+rss.init
+--search.Register
+main
+--search.Run
+----RetrieveFeeds
+------os.Open(dataFile)
+------json.NewDecoder(file).Decode(&feeds)
+----waitGroup.Add(len(feeds))
+----go func
+------Match
+--------matcher.Search
+----------m.retrieve
+------------http.Get(feed.URI)
+------------xml.NewDecoder(resp.Body).Decode(&document)
+----------regexp.MatchString
+----------append(results, &search.Result
+--------results <- result//发给channel
+----go func
+------waitGroup.Wait()//等待任务完成
+------close(results)//关闭管道，同时给display发信号
+----Display(results)
